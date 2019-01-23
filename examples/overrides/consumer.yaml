@@ -1,0 +1,6 @@
+image:
+  tag: "1.0.2"
+
+app:
+  elasticSearchUrl: "kaduna-elasticsearch-client"
+  kafkaUrl: "kaduna-kafka.kaduna:9092"

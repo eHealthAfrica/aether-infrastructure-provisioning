@@ -1,0 +1,22 @@
+# Default values for kernel.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+ui:
+  tag: aet-filesystem-s3
+environment: "prod"
+ums_url: https://ums.ehealthafrica.org
+kernel_url: https://kernel-kaduna.ehealthafrica.org
+domain: ehealthafrica.org
+trusted_origins: .ehealthafrica.org
+ingress:
+  certsecret: wildcard-ehealthafrica
+  hosts:
+    - ui-kaduna.ehealthafrica.org
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+database:
+  # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
+  instance: kdbs-data-col-proj:europe-west2:db-instance
+provider:
+  aws: false
+  gcp: true

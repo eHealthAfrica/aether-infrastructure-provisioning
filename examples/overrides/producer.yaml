@@ -1,0 +1,24 @@
+# Default values for kernel.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image:
+  repository: ehealthafrica/aether-producer
+environment: "prod"
+kernel_url: https://kernel.gather.kdbs.ng
+debug: false
+app:
+  kafkaUrl: "kaduna-kafka.kaduna:9092"
+  secret: producer-secrets
+  db:
+    user: kaduna_producer
+    name: kaduna_producer
+  kernel:
+    url: https://kernel.gather.kdbs.ng
+    db:
+      name: kaduna_kernel
+database:
+  # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
+  instance: kdbs-data-col-proj:europe-west2:kaduna-db-instance
+provider:
+  aws: false
+  gcp: true

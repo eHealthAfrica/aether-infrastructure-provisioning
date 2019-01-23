@@ -1,0 +1,61 @@
+# Default values for hfr.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: 387526361725.dkr.ecr.eu-west-1.amazonaws.com/hfr-app-kd-prod
+  tag: prod
+  pullPolicy: Always
+
+app:
+  secret: hfr-secrets
+  port: 8000
+  static_root: /var/www/static
+  db:
+    host: 127.0.0.1
+    name: kaduna_hfr
+    secret: database-credentials
+    user: kaduna_hfr
+    port: 5432
+  email:
+    backend: django.core.mail.backends.smtp.EmailBackend
+    port: 587
+    user: AKIAIO6VL47UF2ACTYHQ
+    tls: True
+  url: https://hfr-api.gather.kdbs.ng
+  command: start
+
+domain: gather.kdbs.ng
+
+database:
+  instance: kdbs-data-col-proj:europe-west2:kaduna-db-instance
+
+imagePullSecrets:
+  name: aws-ecr-credentials
+  enabled: true
+
+provider:
+  gcp: true
+
+service:
+  name: nginx
+  type: NodePort
+  externalPort: 80
+  internalPort: 80
+
+ingress:
+  certsecret: wildcard
+  hosts:
+    - hfr-api.gather.kdbs.ng
+  ssl:
+    letsencrypt: true
+    cert_secret: wildcard
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "75M"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/issuer: letsencrypt
+

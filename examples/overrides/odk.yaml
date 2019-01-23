@@ -1,0 +1,52 @@
+# Default values for kernel.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+environment: "prod"
+aether:
+  kernel:
+    url: https://kernel.gather.kdbs.ng
+odk_url: https://odk.gather.kdbs.ng
+domain: gather.kdbs.ng
+trusted_origins: .gather.kdbs.ng
+sentry:
+  enabled: true
+app:
+  tag: 0.11.0
+  secret: secrets
+  kernel:
+    secret: secrets
+  db:
+    user: kaduna_odk
+    name: kaduna_odk
+    secret: database-credentials
+  tag: 0.11.0
+  storage:
+    backend: gcs
+    bucket:
+      name: kaduna-aether-odk-upload
+      credentialsPath: "/secrets/gcp/credentials.json"
+      credentialsSecret: "google-bucket-credentials"
+service:
+  type: NodePort
+ingress:
+  certsecret: wildcard
+  hosts:
+    - odk.gather.kdbs.ng
+  ssl:
+    letsencrypt: true
+    cert_secret: wildcard
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "75M"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/issuer: letsencrypt
+database:
+  # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
+  instance: kdbs-data-col-proj:europe-west2:kaduna-db-instance
+provider:
+  aws: false
+  gcp: true
+kube2iam:
+  enabled: false

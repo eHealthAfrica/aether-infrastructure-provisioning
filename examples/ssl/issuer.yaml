@@ -1,0 +1,33 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+  namespace: kube-system
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: foo@ehealthafrica.org
+
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: certmanager-private-key
+
+    # ACME DNS-01 provider configurations
+    dns01:
+      # Here we define a list of DNS-01 providers that can solve DNS challenges
+      providers:
+        # - name: dns01
+        #   route53:
+        #     region: eu-west-1
+        #     accessKeyID: AWS_ACCESS_KEY
+        #     secretAccessKeySecretRef:
+        #       name: route53-credentials-secret
+        #       key: secret
+        # - name: prod-dns
+        #   clouddns:
+        #     # A secretKeyRef to a google cloud json service account
+        #     serviceAccountSecretRef:
+        #       name: clouddns-service-account
+        #       key: service-account.json
+        #     # The project in which to update the DNS zone
+        #     project: gcloud-prod-project

@@ -1,0 +1,42 @@
+# Kaduna override for Gather.
+gather:
+  repository: "ehealthafrica/gather"
+  tag: "3.0.0-rc"
+environment: prod
+provider:
+  aws: false
+  gcp: true
+domain: gather.kdbs.ng
+trusted_origins: gather.kdbs.ng
+service:
+  type: NodePort
+ingress:
+  certsecret: wildcard
+  hosts:
+    - gather.kdbs.ng
+  ssl:
+    letsencrypt: true
+    cert_secret: wildcard
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "75M"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/issuer: letsencrypt
+aether_modules: odk,kernel
+aether:
+  kernel:
+    secret: secrets
+    url: https://kernel.gather.kdbs.ng
+  odk:
+    enabled: true
+    secret: secrets
+    url: https://odk.gather.kdbs.ng
+app:
+  db:
+    secret: database-credentials
+    user: kaduna_gather
+    name: kaduna_gather
+database:
+  # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
+  instance: kdbs-data-col-proj:europe-west2:kaduna-db-instance

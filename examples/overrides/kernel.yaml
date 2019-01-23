@@ -1,0 +1,44 @@
+# Default values for kernel.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+environment: prod
+domain: gather.kdbs.ng
+ingress:
+  certsecret: wildcard
+  hosts:
+    - kernel.gather.kdbs.ng
+  ssl:
+    letsencrypt: true
+    cert_secret: wildcard
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "75M"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/issuer: letsencrypt
+provider:
+  aws: false
+  gcp: true
+sentry:
+  enabled: true
+service:
+  type: LoadBalancer
+database:
+  instance: kdbs-data-col-proj:europe-west2:kaduna-db-instance
+app:
+  tag: 0.11.0
+  secret: secrets
+  url: https://kernel.gather.kdbs.ng
+  storage:
+    backend: gcs
+    bucket:
+      name: kaduna-aether-kernel-upload
+      credentialsPath: "/secrets/gcp/credentials.json"
+      credentialsSecret: "google-bucket-credentials"
+  db:
+    host: 127.0.0.1
+    secret: database-credentials
+    user: kaduna_kernel
+    name: kaduna_kernel
+    readonly_user: kaduna_kernel_ro
