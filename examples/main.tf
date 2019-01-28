@@ -42,22 +42,22 @@ module "system_modules" {
 
 # Aether
 module "aether_kernel" {
-  source = "../modules/helm/aether"
+  source = "../modules/helm/service"
   chart_name = "aether-kernel"
   chart_version = "1.2.0"
   namespace = "example" # UPDATE ME
 }
 
 module "aether_odk" {
-  source = "../modules/helm/aether"
-  chart_name = "aether-kernel"
+  source = "../modules/helm/service"
+  chart_name = "aether-odk"
   chart_version = "1.2.0"
   namespace = "example" # UPDATE ME
 }
 
 module "gather" {
-  source = "../modules/helm/aether"
-  chart_name = "aether-kernel"
+  source = "../modules/helm/service"
+  chart_name = "gather"
   chart_version = "3.1.0"
   namespace = "example" # UPDATE ME
 }
