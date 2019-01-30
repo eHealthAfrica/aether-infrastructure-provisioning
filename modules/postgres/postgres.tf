@@ -1,5 +1,5 @@
 resource "google_sql_database_instance" "master" {
-  name = "${var.google_project}"
+  name = "${var.google_project}-${var.database_instance_name}"
   database_version = "${var.database_version}"
   region = "${var.google_region}"
   project = "${var.google_project}"

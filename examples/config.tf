@@ -9,9 +9,9 @@ provider "kubernetes" {
   username = "${var.admin_user}"
   password = "${var.admin_password}"
 
-  client_certificate     = "${module.gke_cluster.client_certificate}"
-  client_key             = "${module.gke_cluster.client_key}"
-  cluster_ca_certificate = "${module.gke_cluster.cluster_ca_certificate}"
+  client_certificate     = "${base64decode(module.gke_cluster.client_certificate)}"
+  client_key             = "${base64decode(module.gke_cluster.client_key)}"
+  cluster_ca_certificate = "${base64decode(module.gke_cluster.cluster_ca_certificate)}"
   load_config_file       = false
 }
 
@@ -23,8 +23,8 @@ provider "helm" {
     username = "${var.admin_user}"
     password = "${var.admin_password}"
 
-    client_certificate     = "${module.gke_cluster.client_certificate}"
-    client_key             = "${module.gke_cluster.client_key}"
-    cluster_ca_certificate = "${module.gke_cluster.cluster_ca_certificate}"
+    client_certificate     = "${base64decode(module.gke_cluster.client_certificate)}"
+    client_key             = "${base64decode(module.gke_cluster.client_key)}"
+    cluster_ca_certificate = "${base64decode(module.gke_cluster.cluster_ca_certificate)}"
   }
 }

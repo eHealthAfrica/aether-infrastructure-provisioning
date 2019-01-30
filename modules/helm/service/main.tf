@@ -10,6 +10,6 @@ resource "helm_release" "service" {
   namespace = "${var.namespace}"
   keyring   = ""
   values = [
-    "${file("${path.cwd}/${var.chart_name}.yaml")}"
+    "${file("${path.cwd}/overrides/${var.chart_name}.yaml")}"
   ]
 }

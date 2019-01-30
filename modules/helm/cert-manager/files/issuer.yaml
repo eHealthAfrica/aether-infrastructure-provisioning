@@ -16,11 +16,3 @@ spec:
     dns01:
       # Here we define a list of DNS-01 providers that can solve DNS challenges
       providers:
-        - name: route53
-          route53:
-            region: eu-west-1
-
-            accessKeyID: ${aws_access_key_id}
-            secretAccessKeySecretRef:
-              name: route53-credentials-${domain}
-              key: secret

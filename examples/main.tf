@@ -1,13 +1,13 @@
 # Google GKE Cluster and Node Pool
 module "gke_cluster" {
   source = "../modules/gke_cluster"
-  google_zone = "eu-europe-1b"
+  google_zone = "${var.google_region}-b"
   google_project = "${var.google_project}"
   cluster_name = "foo" # UPDATE ME
   initial_node_count = 1
-  additional_zones = "${var.google_region}-c"
   admin_user = "admin"
-  admin_password = "admin" # UPDATE ME
+  additional_zones = "${var.google_region}-c"
+  admin_password = "${var.admin_password}" # UPDATE ME
 }
 
 module "gke_node_pool" {
