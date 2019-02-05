@@ -1,52 +1,47 @@
-# Default values for kernel.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 environment: "prod"
 aether:
   kernel:
-    url: https://kernel.gather.kdbs.ng
-odk_url: https://odk.gather.kdbs.ng
-domain: gather.kdbs.ng
-trusted_origins: .gather.kdbs.ng
+    url: https://kernel.${domain}
+odk_url: https://odk.${domain}
+domain: ${domain}
+trusted_origins: .${domain}
 sentry:
-  enabled: true
+  enabled: false
 app:
-  tag: 0.11.0
-  secret: secrets
+  secret: odk-secrets
   kernel:
-    secret: secrets
+    secret: kernel-secrets
   db:
-    user: kaduna_odk
-    name: kaduna_odk
+    host: 127.0.0.1
+    user: ${project}_odk
+    name: ${project}_odk
     secret: database-credentials
-  tag: 0.11.0
   storage:
     backend: gcs
     bucket:
-      name: kaduna-aether-odk-upload
+      name: ${gcs_bucket_name}
       credentialsPath: "/secrets/gcp/credentials.json"
-      credentialsSecret: "google-bucket-credentials"
+      credentialsSecret: ${gcs_bucket_credentials}
 service:
   type: NodePort
 ingress:
   certsecret: wildcard
   hosts:
-    - odk.gather.kdbs.ng
+    - odk.test.${domain}
   ssl:
     letsencrypt: true
-    cert_secret: wildcard
+    cert_secret: odk.${domain}
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-body-size: "75M"
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/tls-acme: "true"
-    certmanager.k8s.io/issuer: letsencrypt
+    certmanager.k8s.io/cluster-issuer: letsencrypt
+    certmanager.k8s.io/acme-challenge-type: dns01
+    certmanager.k8s.io/acme-dns01-provider: route53
 database:
   # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
-  instance: kdbs-data-col-proj:europe-west2:kaduna-db-instance
+  instance: ${database_instance_name}
 provider:
-  aws: false
   gcp: true
-kube2iam:
-  enabled: false

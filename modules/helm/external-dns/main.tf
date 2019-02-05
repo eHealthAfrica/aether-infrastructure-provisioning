@@ -4,6 +4,6 @@ resource "helm_release" "external-dns" {
   namespace = "kube-system"
   keyring   = ""
   values    = [
-  "${file("${path.module}/files/values.yaml")}"
+    "${file("${path.module}/files/values.yaml")}"
   ]
 }

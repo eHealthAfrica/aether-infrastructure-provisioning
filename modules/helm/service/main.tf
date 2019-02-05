@@ -3,6 +3,18 @@ resource "helm_repository" "eha" {
   url  = "https://ehealthafrica.github.io/helm-charts/"
 }
 
+data "template_file" "override" {
+  template = "${file("${path.cwd}/overrides/${var.chart_name}.yaml")}"
+
+  vars = {
+    domain = "${var.domain}"
+    project = "${var.project}"
+    database_instance_name = "${var.database_instance_name}"
+    gcs_bucket_credentials = "${var.gcs_bucket_credentials}"
+    gcs_bucket_name = "${var.gcs_bucket_name}"
+  }
+}
+
 resource "helm_release" "service" {
   name      = "${var.chart_name}"
   chart     = "eha/${var.chart_name}"
@@ -10,6 +22,6 @@ resource "helm_release" "service" {
   namespace = "${var.namespace}"
   keyring   = ""
   values = [
-    "${file("${path.cwd}/overrides/${var.chart_name}.yaml")}"
+    "${data.template_file.override.rendered}"
   ]
 }

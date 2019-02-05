@@ -5,15 +5,6 @@ resource "helm_release" "cert-manager" {
   keyring   = ""
 }
 
-data "template_file" "certificate" {
-  template = "${file("${path.module}/files/certificate.yaml")}"
-
-  vars {
-    namespace = "${var.namespace}"
-    domain = "${var.domain}"
-  }
-}
-
 data "template_file" "issuer" {
   template = "${file("${path.module}/files/issuer.yaml")}"
 
@@ -21,6 +12,7 @@ data "template_file" "issuer" {
     email_address = "${var.email_address}"
     domain = "${var.domain}"
     namespace = "${var.namespace}"
+    aws_access_key_id = "${var.aws_access_key_id}"
   }
 }
 

@@ -1,44 +1,46 @@
-# Default values for kernel.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-environment: prod
-domain: gather.kdbs.ng
+environment: "prod"
+aether:
+  kernel:
+    url: https://kernel.${domain}
+odk_url: https://odk.${domain}
+domain: ${domain}
+trusted_origins: .${domain}
+sentry:
+  enabled: false
+app:
+  secret: kernel-secrets
+  db:
+    host: 127.0.0.1
+    user: ${project}_kernel
+    name: ${project}_kernel
+    readonly_user: ${project}_kernel_ro
+    secret: database-credentials
+  storage:
+    backend: gcs
+    bucket:
+      name: ${gcs_bucket_name}
+      credentialsPath: "/secrets/gcp/credentials.json"
+      credentialsSecret: "${gcs_bucket_credentials}"
+service:
+  type: NodePort
 ingress:
-  certsecret: wildcard
+  certsecret: kernel.${domain}
   hosts:
-    - kernel.gather.kdbs.ng
+    - kernel.test.${domain}
   ssl:
     letsencrypt: true
-    cert_secret: wildcard
+    cert_secret: kernel.${domain}
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-body-size: "75M"
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/tls-acme: "true"
-    certmanager.k8s.io/issuer: letsencrypt
-provider:
-  aws: false
-  gcp: true
-sentry:
-  enabled: true
-service:
-  type: LoadBalancer
+    certmanager.k8s.io/cluster-issuer: letsencrypt
+    certmanager.k8s.io/acme-challenge-type: dns01
+    certmanager.k8s.io/acme-dns01-provider: route53
 database:
-  instance: kdbs-data-col-proj:europe-west2:kaduna-db-instance
-app:
-  tag: 0.11.0
-  secret: secrets
-  url: https://kernel.gather.kdbs.ng
-  storage:
-    backend: gcs
-    bucket:
-      name: kaduna-aether-kernel-upload
-      credentialsPath: "/secrets/gcp/credentials.json"
-      credentialsSecret: "google-bucket-credentials"
-  db:
-    host: 127.0.0.1
-    secret: database-credentials
-    user: kaduna_kernel
-    name: kaduna_kernel
-    readonly_user: kaduna_kernel_ro
+  # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
+  instance: ${database_instance_name}
+provider:
+  gcp: true

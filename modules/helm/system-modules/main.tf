@@ -27,8 +27,13 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   }
 }
 
+# Dashboard
+module "dashboard" {
+  source = "../kubernetes-dashboard"
+}
+
 module "external-dns" {
-  source = "../external-dns"
+  source = "../external-dns-aws"
   domain = "${var.domain}"
   cluster_name = "${var.cluster_name}"
 }
@@ -41,4 +46,5 @@ module "nginx" {
 module "cert-manager" {
   source = "../cert-manager"
   domain = "${var.domain}"
+  aws_access_key_id = "${module.external-dns.aws_access_key_id}"
 }

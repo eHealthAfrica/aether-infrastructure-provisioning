@@ -17,9 +17,9 @@ resource "google_sql_database_instance" "master" {
 }
 
 resource "google_sql_user" "users" {
-  name     = "postgres"
+  name     = "${var.postgres_root_username}"
   instance = "${google_sql_database_instance.master.name}"
-  password = "${var.postgres_password}"
+  password = "${var.postgres_root_password}"
   project = "${var.google_project}"
 }
 
@@ -42,11 +42,25 @@ resource "google_service_account_key" "key" {
 resource "kubernetes_secret" "google-application-credentials" {
   metadata {
     name = "cloudsql-instance-credentials"
-    namespace = "default"
+    namespace = "${var.namespace}"
   }
   data {
     credentials.json = "${base64decode(google_service_account_key.key.private_key)}"
   }
+}
+
+resource "kubernetes_secret" "db_password" {
+  metadata {
+    name = "database-credentials"
+    namespace = "${var.namespace}"
+  }
+
+  data {
+    host = "127.0.0.1"
+    user = "${var.postgres_root_username}"
+    password = "${var.postgres_root_password}"
+  }
+
 }
 
 output "db_ip" {
@@ -55,6 +69,10 @@ output "db_ip" {
 
 output "db_link" {
   value = "${google_sql_database_instance.master.self_link}"
+}
+
+output "database_instance_name" {
+  value = "${google_sql_database_instance.master.connection_name}"
 }
 
 
