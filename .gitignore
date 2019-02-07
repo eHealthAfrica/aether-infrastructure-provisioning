@@ -10,3 +10,9 @@
 
 # ignore generated secrets
 examples/secrets/*
+
+# ignore SSL issuer
+examples/ssl/issuer.yaml
+
+# ignore Kubernetes auth
+examples/services/k8s_auth.tf

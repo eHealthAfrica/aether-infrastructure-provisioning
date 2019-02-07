@@ -20,6 +20,47 @@ resource "google_container_cluster" "primary" {
 
 }
 
+# Kubernetes config template
+data "template_file" "config" {
+  template = "${file("${path.module}/template/config.tmpl.tf")}"
+  vars = {
+    host     = "${google_container_cluster.primary.endpoint}"
+    username = "${var.admin_user}"
+    password = "${var.admin_password}"
+    project  = "${var.google_project}"
+    region   = "${var.google_region}"
+    zone     = "${var.google_zone}"
+  }
+}
+
+# Kubernetes config template
+data "template_file" "auth" {
+  template = "${file("${path.module}/template/auth_vars.tmpl.tf")}"
+  vars = {
+    client_key = "${base64decode(google_container_cluster.primary.master_auth.0.client_key)}"
+    client_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.client_certificate)}"
+    cluster_ca_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)}"
+  }
+}
+
+# write Kubernees config provider
+resource "local_file" "config" {
+  content  = "${data.template_file.config.rendered}"
+  filename = "${path.cwd}/services/config.tf"
+}
+
+# write certificates
+resource "local_file" "auth" {
+  content  = "${data.template_file.auth.rendered}"
+  filename = "${path.cwd}/services/auth.tf"
+}
+
+resource "local_file" "endpoint" {
+  content  = "variable \"cluster_name\" { default=\"${google_container_cluster.primary.name}\" }"
+  filename = "${path.cwd}/services/cluster.tf"
+}
+
+# Outputs
 output "cluster_name" {
   value = "${google_container_cluster.primary.name}"
 }

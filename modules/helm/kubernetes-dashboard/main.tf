@@ -82,7 +82,7 @@ resource "kubernetes_cluster_role_binding" "dashboard" {
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind = "ClusterRole"
-    name = "kubernetes-dashboard-ro"
+    name = "kubernetes-dashboard-minimal"
   }
   subject {
     kind      = "ServiceAccount"

@@ -1,10 +1,10 @@
 environment: "prod"
 aether:
   kernel:
-    url: https://kernel.${domain}
-odk_url: https://odk.${domain}
+    url: https://kernel.${project}.${domain}
+odk_url: https://odk.test.${domain}
 domain: ${domain}
-trusted_origins: .${domain}
+trusted_origins: .${project}.${domain}
 sentry:
   enabled: false
 app:
@@ -27,10 +27,10 @@ service:
 ingress:
   certsecret: wildcard
   hosts:
-    - odk.test.${domain}
+    - odk.${project}.${domain}
   ssl:
     letsencrypt: true
-    cert_secret: odk.${domain}
+    cert_secret: odk.${project}.${domain}
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     kubernetes.io/ingress.class: nginx
@@ -39,7 +39,7 @@ ingress:
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/cluster-issuer: letsencrypt
     certmanager.k8s.io/acme-challenge-type: dns01
-    certmanager.k8s.io/acme-dns01-provider: route53
+    certmanager.k8s.io/acme-dns01-provider: ${dns_provider}
 database:
   # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
   instance: ${database_instance_name}

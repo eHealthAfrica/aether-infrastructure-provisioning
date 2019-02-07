@@ -12,6 +12,7 @@ data "template_file" "override" {
     database_instance_name = "${var.database_instance_name}"
     gcs_bucket_credentials = "${var.gcs_bucket_credentials}"
     gcs_bucket_name = "${var.gcs_bucket_name}"
+    dns_provider = "${var.dns_provider}"
   }
 }
 

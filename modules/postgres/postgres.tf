@@ -39,28 +39,15 @@ resource "google_service_account_key" "key" {
   service_account_id = "${google_service_account.sql.name}"
 }
 
-resource "kubernetes_secret" "google-application-credentials" {
-  metadata {
-    name = "cloudsql-instance-credentials"
-    namespace = "${var.namespace}"
-  }
-  data {
-    credentials.json = "${base64decode(google_service_account_key.key.private_key)}"
-  }
-}
-
-resource "kubernetes_secret" "db_password" {
-  metadata {
-    name = "database-credentials"
-    namespace = "${var.namespace}"
-  }
-
-  data {
-    host = "127.0.0.1"
-    user = "${var.postgres_root_username}"
-    password = "${var.postgres_root_password}"
-  }
-
+# service account key key_namee
+resource "local_file" "key_name" {
+  content  =<<EOF
+variable "database_instance_name" { default="${google_sql_database_instance.master.connection_name}" }
+variable "service_account_private_key" { default="${google_service_account_key.key.private_key}" }
+variable "postgres_root_username" { default="postgres" }
+variable "postgres_root_password" { default="${var.postgres_root_password}" }
+EOF
+  filename = "${path.cwd}/services/postgres_vars.tf"
 }
 
 output "db_ip" {

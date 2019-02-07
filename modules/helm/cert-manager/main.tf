@@ -1,5 +1,6 @@
 resource "helm_release" "cert-manager" {
   name      = "cert-manager"
+  version   = "v0.5.2"
   chart     = "stable/cert-manager"
   namespace = "${var.namespace}"
   keyring   = ""

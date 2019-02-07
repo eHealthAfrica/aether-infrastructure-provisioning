@@ -5,17 +5,17 @@ environment: prod
 provider:
   aws: false
   gcp: true
-domain: ${domain}
-trusted_origins: gather.${domain}
+domain: ${project}.${domain}
+trusted_origins: gather.${project}.${domain}
 service:
   type: NodePort
 ingress:
   certsecret: wildcard
   hosts:
-    - test.${domain}
+    - ${project}.${domain}
   ssl:
     letsencrypt: true
-    cert_secret: gather.${domain}
+    cert_secret: ${project}.${domain}
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -23,16 +23,16 @@ ingress:
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/cluster-issuer: letsencrypt
     certmanager.k8s.io/acme-challenge-type: dns01
-    certmanager.k8s.io/acme-dns01-provider: route53
+    certmanager.k8s.io/acme-dns01-provider: ${dns_provider}
 aether_modules: odk,kernel
 aether:
   kernel:
     secret: kernel-secrets
-    url: https://kernel.${domain}
+    url: https://kernel.${project}.${domain}
   odk:
     enabled: true
     secret: odk-secrets
-    url: https://odk.${domain}
+    url: https://odk.${project}.${domain}
 app:
   db:
     secret: database-credentials
