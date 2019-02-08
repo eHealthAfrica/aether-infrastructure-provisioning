@@ -8,6 +8,17 @@ resource "kubernetes_secret" "google-application-credentials" {
   }
 }
 
+# service account for bucket acccess
+resource "kubernetes_secret" "google-bucket-credentials" {
+  metadata {
+    name = "${var.namespace}-bucket-credentials"
+    namespace = "${var.namespace}"
+  }
+  data {
+    credentials.json = "${var.bucket_credentials}"
+  }
+}
+
 resource "kubernetes_secret" "db_password" {
   metadata {
     name = "database-credentials"

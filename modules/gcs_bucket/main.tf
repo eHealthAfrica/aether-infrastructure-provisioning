@@ -18,12 +18,11 @@ resource "google_service_account_key" "key" {
   service_account_id = "${google_service_account.bucket.name}"
 }
 
-resource "kubernetes_secret" "google-application-credentials" {
-  metadata {
-    name = "${var.gcs_bucket_credentials}"
-    namespace = "${var.namespace}"
-  }
-  data {
-    credentials.json = "${base64decode(google_service_account_key.key.private_key)}"
-  }
+
+# service account key key_namee
+resource "local_file" "bucket_creds" {
+  content  =<<EOF
+variable "bucket_credentials" { default="${google_service_account_key.key.private_key}" }
+EOF
+  filename = "${path.cwd}/services/bucket_creds.tf"
 }

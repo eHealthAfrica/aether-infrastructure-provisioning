@@ -23,6 +23,16 @@ resource "google_sql_user" "users" {
   project = "${var.google_project}"
 }
 
+# Create databases initially
+resource "google_sql_database" "dbs" {
+  name      = "${element(var.databases, count.index)}"
+  count     = "${length(var.databases)}"
+  instance  = "${google_sql_database_instance.master.name}"
+  charset   = "UTF8"
+  collation = "en_US.UTF8"
+  project   = "${var.google_project}"
+}
+
 resource "google_service_account" "sql" {
   account_id = "postgres-${var.google_project}"
 }

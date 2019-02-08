@@ -1,4 +1,4 @@
-# Google GKE Cluster and Node Pool
+#Google GKE Cluster and Node Pool
 module "gke_cluster" {
   source = "../modules/gke_cluster"
   google_zone = "${var.google_region}-b"
@@ -27,7 +27,30 @@ module "postgres" {
   source = "../modules/postgres"
   google_project = "${var.google_project}"
   google_region = "${var.google_region}"
-  postgres_root_password = "Uechiu0ja4phaiB"
-  database_instance_name = "${var.google_project}-v4"
+  postgres_root_password = "${var.postgres_root_password}"
+  database_instance_name = "${var.google_project}-v23"
+  databases = ["${var.project}_odk","${var.project}_gather","${var.project}_kernel"]
+  namespace = "${var.project}"
+}
+
+# Bucket storage
+module "aether_odk_storage" {
+  source = "../modules/gcs_bucket"
+  gcs_bucket_name = "aether-odk-example"
+  gcs_bucket_credentials = "aether-odk-example-gcs-credentials"
   namespace = "${var.namespace}"
+}
+
+module "aether_kernel_storage" {
+  source = "../modules/gcs_bucket"
+  gcs_bucket_name = "aether-kernel-example"
+  gcs_bucket_credentials = "aether-kernel-example-gcs-credentials"
+  namespace = "${var.namespace}"
+}
+
+# DNS IAM auth
+module "iam-dns-aws" {
+  source = "../modules/iam-dns-aws"
+  cluster_name = "${var.namespace}"
+  domain = "${var.domain}"
 }

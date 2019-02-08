@@ -1,28 +1,5 @@
-resource "aws_iam_user" "dns" {
-  name = "external-dns-gcp-${var.domain}-${var.cluster_name}"
-}
-
 data "aws_route53_zone" "domain" {
   name = "${var.domain}."
-}
-
-data "template_file" "iam" {
-  template = "${file("${path.module}/files/external-dns.tmpl.json")}"
-
-  vars {
-    zone_id = "${data.aws_route53_zone.domain.zone_id}"
-  }
-}
-
-resource "aws_iam_access_key" "dns" {
-  user = "${aws_iam_user.dns.name}"
-}
-
-resource "aws_iam_user_policy" "dns" {
-  name = "external-dns-gcp-${var.domain}-${var.cluster_name}"
-  user = "${aws_iam_user.dns.name}"
-
-  policy = "${data.template_file.iam.rendered}"
 }
 
 data "template_file" "values" {
@@ -31,8 +8,8 @@ data "template_file" "values" {
   vars {
     zone_id = "${data.aws_route53_zone.domain.zone_id}"
     aws_region = "${var.aws_region}"
-    aws_secret_key = "${aws_iam_access_key.dns.secret}"
-    aws_access_key = "${aws_iam_access_key.dns.id}"
+    aws_secret_key = "${var.aws_secret_access_key}"
+    aws_access_key = "${var.aws_access_key_id}"
   }
 }
 
@@ -54,10 +31,10 @@ resource "kubernetes_secret" "secret" {
   }
 
   data {
-    secret = "${aws_iam_access_key.dns.secret}"
+    secret = "${var.aws_secret_access_key}"
   }
 }
 
 output "aws_access_key_id" {
-  value = "${aws_iam_access_key.dns.id}"
+  value = "${var.aws_access_key_id}"
 }

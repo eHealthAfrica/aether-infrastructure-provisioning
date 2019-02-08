@@ -1,3 +1,12 @@
+resource "kubernetes_namespace" "namespace" {
+  metadata {
+    annotations {
+      name = "${var.namespace}"
+    }
+    name = "${var.namespace}"
+  }
+}
+
 # Helm modules
 module "system_modules" {
   source = "../../modules/helm/system-modules"
@@ -5,23 +14,18 @@ module "system_modules" {
   google_zone = "${var.google_zone}"
   cluster_name = "${var.cluster_name}"
   domain = "${var.domain}"
+  aws_access_key_id = "${var.aws_access_key_id}"
+  aws_secret_access_key = "${var.aws_secret_access_key}"
 }
 
-# Postgres secrets
+# Secrets
 module "postgres_secrets" {
   source = "../../modules/secrets"
   namespace = "${var.namespace}"
   postgres_root_username = "${var.postgres_root_username}"
   postgres_root_password = "${var.postgres_root_password}"
   service_account_private_key = "${var.service_account_private_key}"
-}
-
-# Aether Kernel
-module "aether_kernel_storage" {
-  source = "../../modules/gcs_bucket"
-  gcs_bucket_name = "aether-kernel-example"
-  gcs_bucket_credentials = "aether-kernel-example-gcs-credentials"
-  namespace = "example" # UPDATE ME
+  bucket_credentials = "${var.bucket_credentials}"
 }
 
 # Aether
@@ -29,21 +33,13 @@ module "aether_kernel" {
   source = "../../modules/helm/service"
   chart_name = "aether-kernel"
   chart_version = "1.2.0"
-  namespace = "example" # UPDATE ME
-  project = "example" # UPDATE ME
+  namespace = "${var.namespace}"
+  project = "${var.namespace}"
   domain = "${var.domain}"
   dns_provider = "route53"
   database_instance_name = "${var.database_instance_name}"
   gcs_bucket_name = "aether-kernel-example"
   gcs_bucket_credentials = "aether-kernel-example-gcs-credentials"
-}
-
-# Aether Kernel
-module "aether_odk_storage" {
-  source = "../../modules/gcs_bucket"
-  gcs_bucket_name = "aether-odk-example"
-  gcs_bucket_credentials = "aether-odk-example-gcs-credentials"
-  namespace = "example" # UPDATE ME
 }
 
 module "aether_odk" {
