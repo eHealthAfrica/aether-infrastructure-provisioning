@@ -1,7 +1,6 @@
-resource "kubernetes_role" "dashboard" {
+resource "kubernetes_cluster_role" "dashboard" {
   metadata {
-    name = "minimal"
-    namespace = "kube-system"
+    name = "kubernetes-dashboard-minimal"
   }
 
   rule {

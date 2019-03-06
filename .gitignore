@@ -15,11 +15,9 @@ examples/services/secrets/*
 examples/services/ssl/issuer.yaml
 
 # ignore generated var files
-examples/services/k8s_auth.tf
 examples/services/auth.tf
 examples/services/cluster.tf
 examples/services/config.tf
 examples/services/postgres_vars.tf
 examples/services/bucket_creds.tf
 examples/services/dns_iam.tf
-

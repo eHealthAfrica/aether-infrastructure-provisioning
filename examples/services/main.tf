@@ -39,7 +39,7 @@ module "aether_kernel" {
   dns_provider = "route53"
   database_instance_name = "${var.database_instance_name}"
   gcs_bucket_name = "aether-kernel-example"
-  gcs_bucket_credentials = "aether-kernel-example-gcs-credentials"
+  gcs_bucket_credentials = "example-bucket-credentials"
 }
 
 module "aether_odk" {
@@ -52,7 +52,7 @@ module "aether_odk" {
   dns_provider = "route53"
   database_instance_name = "${var.database_instance_name}"
   gcs_bucket_name = "aether-kernel-example"
-  gcs_bucket_credentials = "aether-kernel-example-gcs-credentials"
+  gcs_bucket_credentials = "example-bucket-credentials"
 }
 
 module "gather" {

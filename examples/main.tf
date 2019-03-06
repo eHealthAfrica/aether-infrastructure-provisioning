@@ -36,14 +36,14 @@ module "postgres" {
 # Bucket storage
 module "aether_odk_storage" {
   source = "../modules/gcs_bucket"
-  gcs_bucket_name = "aether-odk-example"
+  gcs_bucket_name = "aether-odk-example-v2"
   gcs_bucket_credentials = "aether-odk-example-gcs-credentials"
   namespace = "${var.namespace}"
 }
 
 module "aether_kernel_storage" {
   source = "../modules/gcs_bucket"
-  gcs_bucket_name = "aether-kernel-example"
+  gcs_bucket_name = "aether-kernel-example-v2"
   gcs_bucket_credentials = "aether-kernel-example-gcs-credentials"
   namespace = "${var.namespace}"
 }

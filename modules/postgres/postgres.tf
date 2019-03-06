@@ -54,7 +54,7 @@ resource "local_file" "key_name" {
   content  =<<EOF
 variable "database_instance_name" { default="${google_sql_database_instance.master.connection_name}" }
 variable "service_account_private_key" { default="${google_service_account_key.key.private_key}" }
-variable "postgres_root_username" { default="postgres" }
+variable "postgres_root_username" { default="${var.postgres_root_username}" }
 variable "postgres_root_password" { default="${var.postgres_root_password}" }
 EOF
   filename = "${path.cwd}/services/postgres_vars.tf"

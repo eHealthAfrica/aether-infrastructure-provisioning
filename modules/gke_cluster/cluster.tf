@@ -20,6 +20,45 @@ resource "google_container_cluster" "primary" {
 
 }
 
+# Kubernetes config
+provider "kubernetes" {
+  host     = "${google_container_cluster.primary.endpoint}"
+  username = "${var.admin_user}"
+  password = "${var.admin_password}"
+  client_key = "${base64decode(google_container_cluster.primary.master_auth.0.client_key)}"
+  client_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.client_certificate)}"
+  cluster_ca_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)}"
+}
+
+# Tiller account
+resource "kubernetes_service_account" "tiller" {
+  automount_service_account_token = true
+
+  metadata {
+    name = "tiller"
+    namespace = "kube-system"
+  }
+}
+
+resource "kubernetes_cluster_role_binding" "tiller" {
+  metadata {
+    name = "tiller-cluster-rule"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "cluster-admin"
+  }
+
+  subject {
+    kind      = "ServiceAccount"
+    name      = "${kubernetes_service_account.tiller.metadata.0.name}"
+    api_group = ""
+    namespace = "${kubernetes_service_account.tiller.metadata.0.namespace}"
+  }
+}
+
 # Kubernetes config template
 data "template_file" "config" {
   template = "${file("${path.module}/template/config.tmpl.tf")}"
