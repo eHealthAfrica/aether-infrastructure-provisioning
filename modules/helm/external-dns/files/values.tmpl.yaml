@@ -1,0 +1,9 @@
+domainFilters: ["${domain}"]
+policy: sync
+provider: google
+google:
+  project: "${google_project}"
+  serviceAccountSecret: clouddns-private-key
+rbac:
+  create: true
+  serviceAccountName: external-dns

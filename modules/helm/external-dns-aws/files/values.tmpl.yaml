@@ -1,9 +1,0 @@
-aws:
-  secretKey: ${aws_secret_key}
-  accessKey: ${aws_access_key}
-  region: ${aws_region}
-zoneIdFilters: ["${zone_id}"]
-policy: sync
-rbac:
-  create: true
-  serviceAccountName: external-dns

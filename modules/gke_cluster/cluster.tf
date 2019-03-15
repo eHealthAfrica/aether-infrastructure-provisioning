@@ -59,6 +59,12 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   }
 }
 
+# add EHA repo
+resource "helm_repository" "eha" {
+  name = "eha"
+  url  = "https://ehealthafrica.github.io/helm-charts/"
+}
+
 # Kubernetes config template
 data "template_file" "config" {
   template = "${file("${path.module}/template/config.tmpl.tf")}"

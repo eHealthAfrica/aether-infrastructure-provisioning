@@ -1,8 +1,3 @@
-resource "helm_repository" "eha" {
-  name = "eha"
-  url  = "https://ehealthafrica.github.io/helm-charts/"
-}
-
 data "template_file" "override" {
   template = "${file("${path.cwd}/overrides/${var.chart_name}.yaml")}"
 

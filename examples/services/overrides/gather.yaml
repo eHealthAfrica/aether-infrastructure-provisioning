@@ -1,4 +1,3 @@
-# Kaduna override for Gather.
 gather:
   repository: "ehealthafrica/gather"
 environment: prod
@@ -17,9 +16,10 @@ ingress:
     letsencrypt: true
     cert_secret: ${project}.${domain}
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
+    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-body-size: "75M"
+    ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/cluster-issuer: letsencrypt
     certmanager.k8s.io/acme-challenge-type: dns01

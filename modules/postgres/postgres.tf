@@ -23,14 +23,13 @@ resource "google_sql_user" "users" {
   project = "${var.google_project}"
 }
 
-# Create databases initially
-resource "google_sql_database" "dbs" {
-  name      = "${element(var.databases, count.index)}"
-  count     = "${length(var.databases)}"
+resource "google_sql_database" "root_db" {
+  name      = "${var.postgres_root_username}"
   instance  = "${google_sql_database_instance.master.name}"
   charset   = "UTF8"
   collation = "en_US.UTF8"
   project   = "${var.google_project}"
+  depends_on = ["google_sql_user.users"]
 }
 
 resource "google_service_account" "sql" {

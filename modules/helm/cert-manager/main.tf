@@ -13,7 +13,7 @@ data "template_file" "issuer" {
     email_address = "${var.email_address}"
     domain = "${var.domain}"
     namespace = "${var.namespace}"
-    aws_access_key_id = "${var.aws_access_key_id}"
+    google_project = "${var.google_project}"
   }
 }
 

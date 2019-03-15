@@ -8,7 +8,7 @@ resource "kubernetes_cluster_role" "dashboard" {
     resources =  ["pods", "configmaps",
                   "deployments", "persistentvolumeclaims",
                   "replicationcontrollers", "replicationcontrollers/scale",
-                  "serviceaccounts", "services", "nodes", "persistentvolumeclaims",
+                  "serviceaccounts", "services", "ingresses", "nodes", "persistentvolumeclaims",
                   "persistentvolumes" ]
     verbs = ["get", "watch", "list"]
   }

@@ -12,10 +12,7 @@ module "system_modules" {
   source = "../../modules/helm/system-modules"
   google_project = "${var.google_project}"
   google_zone = "${var.google_zone}"
-  cluster_name = "${var.cluster_name}"
   domain = "${var.domain}"
-  aws_access_key_id = "${var.aws_access_key_id}"
-  aws_secret_access_key = "${var.aws_secret_access_key}"
 }
 
 # Secrets
@@ -36,7 +33,7 @@ module "aether_kernel" {
   namespace = "${var.namespace}"
   project = "${var.namespace}"
   domain = "${var.domain}"
-  dns_provider = "route53"
+  dns_provider = "gcp"
   database_instance_name = "${var.database_instance_name}"
   gcs_bucket_name = "aether-kernel-example"
   gcs_bucket_credentials = "example-bucket-credentials"
@@ -49,7 +46,7 @@ module "aether_odk" {
   namespace = "example" # UPDATE ME
   project = "example" # UPDATE ME
   domain = "${var.domain}"
-  dns_provider = "route53"
+  dns_provider = "gcp"
   database_instance_name = "${var.database_instance_name}"
   gcs_bucket_name = "aether-kernel-example"
   gcs_bucket_credentials = "example-bucket-credentials"
@@ -62,6 +59,6 @@ module "gather" {
   namespace = "example" # UPDATE ME
   project = "example" # UPDATE ME
   domain = "${var.domain}"
-  dns_provider = "route53"
+  dns_provider = "gcp"
   database_instance_name = "${var.database_instance_name}"
 }
