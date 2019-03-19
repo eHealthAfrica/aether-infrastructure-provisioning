@@ -33,6 +33,11 @@ module "postgres" {
   namespace = "${var.project}"
 }
 
+module "google_dns" {
+  source = "../modules/google_dns"
+  domain = "${var.domain}"
+}
+
 # Bucket storage
 module "aether_odk_storage" {
   source = "../modules/gcs_bucket"
