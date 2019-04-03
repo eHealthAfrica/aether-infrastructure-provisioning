@@ -1,1 +1,1 @@
-variable "domain" {}
+variable "root_domain" {}
