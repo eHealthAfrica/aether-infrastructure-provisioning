@@ -3,11 +3,20 @@ data "template_file" "override" {
 
   vars = {
     domain = "${var.domain}"
-    project = "${var.project}"
     database_instance_name = "${var.database_instance_name}"
-    gcs_bucket_credentials = "${var.gcs_bucket_credentials}"
-    gcs_bucket_name = "${var.gcs_bucket_name}"
+    gcs_bucket_credentials = "bucket-credentials"
+    kernel_bucket_name = "${var.kernel_bucket_name}"
+    odk_bucket_name = "${var.odk_bucket_name}"
     dns_provider = "${var.dns_provider}"
+    kernel_url = "${var.kernel_url}"
+    odk_url = "${var.odk_url}"
+    gather_url = "${var.gather_url}"
+    kernel_database_name = "${replace(var.kernel_database_name, "-", "_")}"
+    odk_database_name = "${replace(var.odk_database_name, "-", "_")}"
+    gather_database_name = "${replace(var.gather_database_name, "-", "_")}"
+    kernel_database_user = "${replace(var.kernel_database_name, "-", "_")}"
+    odk_database_user = "${replace(var.odk_database_user, "-", "_")}"
+    gather_database_user = "${replace(var.gather_database_user, "-", "_")}"
   }
 }
 
