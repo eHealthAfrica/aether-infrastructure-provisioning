@@ -2,19 +2,18 @@ gather:
   repository: "ehealthafrica/gather"
 environment: prod
 provider:
-  aws: false
   gcp: true
-domain: ${project}.${domain}
-trusted_origins: ${project}.${domain}
+domain: ${domain}
+trusted_origins: ${domain}
 service:
   type: NodePort
 ingress:
   certsecret: wildcard
   hosts:
-    - ${project}.${domain}
+    - ${gather_url}
   ssl:
     letsencrypt: true
-    cert_secret: ${project}.${domain}
+    cert_secret: ${gather_url}
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     kubernetes.io/ingress.class: nginx
@@ -28,16 +27,16 @@ aether_modules: odk,kernel
 aether:
   kernel:
     secret: kernel-secrets
-    url: https://kernel.${project}.${domain}
+    url: https://${kernel_url}
   odk:
     enabled: true
     secret: odk-secrets
-    url: https://odk.${project}.${domain}
+    url: https://${odk_url}
 app:
   db:
     secret: database-credentials
-    user: gather
-    name: gather
+    user: ${gather_database_user}
+    name: ${gather_database_name}
 database:
   # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
   instance: ${database_instance_name}

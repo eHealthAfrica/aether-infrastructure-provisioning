@@ -1,35 +1,36 @@
 environment: "prod"
 aether:
   kernel:
-    url: https://kernel.${project}.${domain}
-odk_url: https://odk.${project}.${domain}
+    url: https://${kernel_url}
+odk_url: https://${odk_url}
 domain: ${domain}
-trusted_origins: .${project}.${domain}
+trusted_origins: .${domain}
 sentry:
   enabled: false
 app:
   secret: kernel-secrets
+  tag: 1.3.0
   db:
     host: 127.0.0.1
-    user: ${project}_kernel
-    name: ${project}_kernel
-    readonly_user: ${project}_kernel_ro
+    user: ${kernel_database_user}
+    name: ${kernel_database_name}
+    readonly_user: ${kernel_database_user}_ro
     secret: database-credentials
   storage:
     backend: gcs
     bucket:
-      name: ${gcs_bucket_name}
+      name: ${kernel_bucket_name}
       credentialsPath: "/secrets/gcp/credentials.json"
       credentialsSecret: "${gcs_bucket_credentials}"
 service:
   type: NodePort
 ingress:
-  certsecret: kernel.${project}.${domain}
+  certsecret: ${kernel_url}
   hosts:
-    - kernel.${project}.${domain}
+    - ${kernel_url}
   ssl:
     letsencrypt: true
-    cert_secret: kernel.${project}.${domain}
+    cert_secret: ${kernel_url}
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     kubernetes.io/ingress.class: nginx

@@ -1,25 +1,26 @@
 environment: "prod"
 aether:
   kernel:
-    url: https://kernel.${project}.${domain}
-odk_url: https://odk.test.${domain}
+    url: https://${kernel_url}
+odk_url: https://${odk_url}
 domain: ${domain}
-trusted_origins: .${project}.${domain}
+trusted_origins: .${domain}
 sentry:
   enabled: false
 app:
+  tag: 1.3.0
   secret: odk-secrets
   kernel:
     secret: kernel-secrets
   db:
     host: 127.0.0.1
-    user: ${project}_odk
-    name: ${project}_odk
+    user: ${odk_database_user}
+    name: ${odk_database_name}
     secret: database-credentials
   storage:
     backend: gcs
     bucket:
-      name: ${gcs_bucket_name}
+      name: ${odk_bucket_name}
       credentialsPath: "/secrets/gcp/credentials.json"
       credentialsSecret: ${gcs_bucket_credentials}
 service:
@@ -27,10 +28,10 @@ service:
 ingress:
   certsecret: wildcard
   hosts:
-    - odk.${project}.${domain}
+    - ${odk_url}
   ssl:
     letsencrypt: true
-    cert_secret: odk.${project}.${domain}
+    cert_secret: ${odk_url}
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     kubernetes.io/ingress.class: nginx
