@@ -1,20 +1,20 @@
 #Google GKE Cluster and Node Pool
 module "gke_cluster" {
   source = "../modules/gke_cluster"
-  google_zone = "${var.google_region}-b"
-  google_region = "${var.google_region}-b"
+  google_zone = "${var.google_zone}"
+  google_region = "${var.google_region}"
   google_project = "${var.google_project}"
   cluster_name = "foo" # UPDATE ME
   initial_node_count = 1
   admin_user = "admin"
-  additional_zones = "${var.google_region}-c"
+  additional_zones = "${var.google_additional_zones}"
   admin_password = "${var.admin_password}" # UPDATE ME
 }
 
 module "gke_node_pool" {
   source = "../modules/gke_node_pool"
   cluster_name = "${module.gke_cluster.cluster_name}"
-  google_zone = "${var.google_region}-b"
+  google_zone = "${var.google_zone}"
   pool_name = "app-pool"
   node_count = 1
   cluster_node_type = "n1-standard-1"
@@ -28,27 +28,26 @@ module "postgres" {
   google_project = "${var.google_project}"
   google_region = "${var.google_region}"
   postgres_root_password = "${var.postgres_root_password}"
-  database_instance_name = "${var.google_project}-v36"
-  databases = ["${var.project}_odk","${var.project}_gather","${var.project}_kernel"]
-  namespace = "${var.project}"
+  postgres_database_instance_name = "${var.postgres_database_instance_name}"
+  namespace = "${var.namespace}"
 }
 
 module "google_dns" {
   source = "../modules/google_dns"
-  domain = "${var.domain}"
+  root_domain = "${var.root_domain}"
 }
 
 # Bucket storage
 module "aether_odk_storage" {
   source = "../modules/gcs_bucket"
-  gcs_bucket_name = "aether-odk-example-v3"
-  gcs_bucket_credentials = "aether-odk-example-gcs-credentials"
+  gcs_bucket_name = "${var.odk_bucket_name}"
+  gcs_bucket_credentials = "${var.bucket_credentials}"
   namespace = "${var.namespace}"
 }
 
 module "aether_kernel_storage" {
   source = "../modules/gcs_bucket"
-  gcs_bucket_name = "aether-kernel-example-v3"
-  gcs_bucket_credentials = "aether-kernel-example-gcs-credentials"
+  gcs_bucket_name = "${var.kernel_bucket_name}"
+  gcs_bucket_credentials = "${var.kernel_bucket_name}-credentials"
   namespace = "${var.namespace}"
 }
