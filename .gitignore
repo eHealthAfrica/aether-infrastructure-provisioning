@@ -21,3 +21,7 @@ examples/services/config.tf
 examples/services/postgres_vars.tf
 examples/services/bucket_creds.tf
 examples/services/dns_iam.tf
+
+# ignore vars.tf
+examples/vars.tf
+examples/services/vars.tf
