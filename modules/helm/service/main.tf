@@ -11,12 +11,15 @@ data "template_file" "override" {
     kernel_url = "${var.kernel_url}"
     odk_url = "${var.odk_url}"
     gather_url = "${var.gather_url}"
+    ui_url = "${var.ui_url}"
     kernel_database_name = "${replace(var.kernel_database_name, "-", "_")}"
     odk_database_name = "${replace(var.odk_database_name, "-", "_")}"
     gather_database_name = "${replace(var.gather_database_name, "-", "_")}"
+    ui_database_name = "${replace(var.ui_database_name, "-", "_")}"
     kernel_database_user = "${replace(var.kernel_database_name, "-", "_")}"
     odk_database_user = "${replace(var.odk_database_user, "-", "_")}"
     gather_database_user = "${replace(var.gather_database_user, "-", "_")}"
+    ui_database_user = "${replace(var.ui_database_user, "-", "_")}"
   }
 }
 
