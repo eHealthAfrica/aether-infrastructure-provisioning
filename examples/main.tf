@@ -17,7 +17,7 @@ module "gke_node_pool" {
   google_zone = "${var.google_zone}"
   pool_name = "app-pool"
   node_count = 1
-  cluster_node_type = "n1-standard-1"
+  cluster_node_type = "n1-standard-2"
   google_project = "${var.google_project}"
   cluster_node_disk_size = 20
   node_pool_role = "app"
@@ -28,7 +28,7 @@ module "postgres" {
   google_project = "${var.google_project}"
   google_region = "${var.google_region}"
   postgres_root_password = "${var.postgres_root_password}"
-  postgres_database_instance_name = "${var.postgres_database_instance_name}"
+  database_instance_name = "${var.database_instance_name}"
   namespace = "${var.namespace}"
 }
 

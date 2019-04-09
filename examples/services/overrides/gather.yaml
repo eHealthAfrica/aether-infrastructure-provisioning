@@ -1,5 +1,6 @@
 gather:
   repository: "ehealthafrica/gather"
+replicaCount: 2
 environment: prod
 provider:
   gcp: true

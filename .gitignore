@@ -18,8 +18,10 @@ examples/services/ssl/issuer.yaml
 examples/services/auth.tf
 examples/services/cluster.tf
 examples/services/config.tf
+examples/postgres_vars.tf
 examples/services/postgres_vars.tf
 examples/services/bucket_creds.tf
+examples/bucket_creds.tf
 examples/services/dns_iam.tf
 
 # ignore vars.tf

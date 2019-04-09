@@ -14,6 +14,7 @@ module "system_modules" {
   google_zone = "${var.google_zone}"
   domain = "${var.domain}"
   project = "${var.namespace}"
+  root_domain = "${var.root_domain}"
 }
 
 # Secrets
@@ -24,8 +25,7 @@ module "secrets" {
   postgres_root_password = "${var.postgres_root_password}"
   service_account_private_key = "${var.service_account_private_key}"
   bucket_credentials = "${var.bucket_credentials}"
-  monitoring_password = "${var.monitoring_password}"
-  monitoring_user = "${var.monitoring_password}"
+  monitoring_htauth = "${var.monitoring_htauth}"
   monitoring_namespace = "${var.monitoring_namespace}"
 }
 
@@ -60,6 +60,20 @@ module "aether_odk" {
   odk_database_user = "${var.odk_database_user}"
 }
 
+module "aether_ui" {
+  source = "../../modules/helm/service"
+  chart_name = "aether-ui"
+  chart_version = "${var.ui_helm_chart_version}"
+  namespace = "${var.namespace}"
+  domain = "${var.domain}"
+  dns_provider = "gcp"
+  database_instance_name = "${var.database_instance_name}"
+  ui_url = "${var.ui_url}"
+  ui_database_name = "${var.ui_database_name}"
+  ui_database_user = "${var.ui_database_user}"
+  kernel_url = "${var.kernel_url}"
+}
+
 module "gather" {
   source = "../../modules/helm/service"
   chart_name = "gather"
@@ -69,6 +83,7 @@ module "gather" {
   dns_provider = "gcp"
   database_instance_name = "${var.database_instance_name}"
   kernel_url = "${var.kernel_url}"
+  odk_url = "${var.odk_url}"
   gather_url = "${var.gather_url}"
   gather_database_name = "${var.gather_database_name}"
   gather_database_user = "${var.gather_database_user}"
