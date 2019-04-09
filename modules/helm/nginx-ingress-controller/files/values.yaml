@@ -1,0 +1,30 @@
+## nginx configuration
+## Ref: https://github.com/kubernetes/ingress/blob/master/controllers/nginx/configuration.md
+##
+controller:
+  stats:
+    enabled: true
+
+  # if true, the controller will set the endpoint records on the ingress objects to reflect those on the service
+  publishService:
+    enabled: true
+
+  externalTrafficPolicy: "Local"
+
+  ## If controller.stats.enabled = true and controller.metrics.enabled = true, Prometheus metrics will be exported
+  metrics:
+    enabled: true
+
+    service:
+      annotations:
+        prometheus.io/scrape: true
+
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: "prometheus-operator"
+      namespace: "kube-system"
+
+  lifecycle: {}
+
+  priorityClassName: ""
