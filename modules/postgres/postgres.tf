@@ -1,5 +1,5 @@
 resource "google_sql_database_instance" "master" {
-  name = "${var.postgres_database_instance_name}"
+  name = "${var.database_instance_name}"
   database_version = "${var.database_version}"
   region = "${var.google_region}"
   project = "${var.google_project}"
@@ -33,7 +33,8 @@ resource "google_sql_database" "root_db" {
 }
 
 resource "google_service_account" "sql" {
-  account_id = "postgres-${var.google_project}"
+  display_name = "aether-postgres"
+  account_id = "aether-postgres-proxy"
 }
 
 resource "google_project_iam_binding" "sql" {
