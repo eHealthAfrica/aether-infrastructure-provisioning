@@ -6,7 +6,7 @@ module "dashboard" {
 # external DNS GCP DNS
 module "external-dns" {
   source = "../external-dns"
-  domain = "${var.domain}"
+  root_domain = "${var.root_domain}"
   google_project = "${var.google_project}"
 }
 
