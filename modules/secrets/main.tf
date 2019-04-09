@@ -1,4 +1,4 @@
-resource "kubernetes_secret" "google-application-credentials" {
+resource "kubernetes_secret" "google-cloudsql-credentials" {
   metadata {
     name = "cloudsql-instance-credentials"
     namespace = "${var.namespace}"
@@ -40,16 +40,13 @@ resource "kubernetes_namespace" "monitoring" {
 
 resource "kubernetes_secret" "monitoring" {
   metadata {
-    name = "basic-auth"
     namespace = "monitoring"
+    name = "basic-auth"
   }
 
   data {
-    username = "${var.monitoring_user}"
-    password = "${var.monitoring_password}"
+    auth = "${var.monitoring_htauth}"
   }
-
-  type = "kubernetes.io/basic-auth"
 
   depends_on = ["kubernetes_namespace.monitoring"]
 }
