@@ -1,4 +1,4 @@
-domainFilters: ["${domain}"]
+domainFilters: ["${root_domain}"]
 policy: sync
 provider: google
 google:

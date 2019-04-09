@@ -19,7 +19,7 @@ data "template_file" "values" {
   template = "${file("${path.module}/files/values.tmpl.yaml")}"
 
   vars {
-    domain = "${var.domain}"
+    root_domain = "${var.root_domain}"
     google_project = "${var.google_project}"
   }
 }
