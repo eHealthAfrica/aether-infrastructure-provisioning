@@ -33,3 +33,8 @@ resource "helm_release" "service" {
     "${data.template_file.override.rendered}"
   ]
 }
+
+# resource "local_file" "foo" {
+#   content     = "${data.template_file.override.rendered}"
+#   filename = "${path.cwd}/${var.chart_name}.yaml"
+# }

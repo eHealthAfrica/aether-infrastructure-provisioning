@@ -22,7 +22,7 @@ controller:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        release: "prometheus-operator"
+        release: "${prometheus_name}"
       namespace: "kube-system"
 
   lifecycle: {}

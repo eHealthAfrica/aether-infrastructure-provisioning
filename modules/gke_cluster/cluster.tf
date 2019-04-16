@@ -1,13 +1,13 @@
 # GKE cluster
 resource "google_container_cluster" "primary" {
-  name    = "${var.cluster_name}"
-  zone    = "${var.google_zone}"
+  name = "${var.cluster_name}"
+  location = "${var.google_location}"
   project = "${var.google_project}"
   network = "default"
   initial_node_count = "${var.initial_node_count}"
 
-  additional_zones = [
-    "${split(",", "${var.additional_zones}")}",
+  node_locations = [
+    "${split(",", "${var.google_node_locations}")}",
   ]
 
   master_auth {
@@ -74,7 +74,7 @@ data "template_file" "config" {
     password = "${var.admin_password}"
     project  = "${var.google_project}"
     region   = "${var.google_region}"
-    zone     = "${var.google_zone}"
+    zone     = "${var.google_location}"
   }
 }
 

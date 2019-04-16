@@ -1,9 +1,9 @@
 # GKE Node pool
 resource "google_container_node_pool" "pool" {
-  name       = "${var.pool_name}"
-  zone       = "${var.google_zone}"
-  cluster    = "${var.cluster_name}"
-  project    = "${var.google_project}"
+  name = "${var.pool_name}"
+  location = "${var.google_location}"
+  cluster = "${var.cluster_name}"
+  project = "${var.google_project}"
   node_count = "${var.node_count}"
 
   node_config {

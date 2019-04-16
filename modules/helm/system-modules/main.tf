@@ -13,6 +13,7 @@ module "external-dns" {
 # Nginx ingress controller
 module "nginx" {
   source = "../nginx-ingress-controller"
+  prometheus_name = "${module.prometheus.name}"
 }
 
 # Cert-manager letsencrypt

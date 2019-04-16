@@ -1,3 +1,10 @@
+data "template_file" "values" {
+  template = "${file("${path.module}/files/values.tpl.yaml")}"
+  vars = {
+    prometheus_name = "${var.prometheus_name}"
+  }
+}
+
 resource "helm_release" "nginx-ingress" {
   name = "nginx-ingress"
   chart = "stable/nginx-ingress"
@@ -9,7 +16,7 @@ resource "helm_release" "nginx-ingress" {
   }
 
    values    = [
-    "${file("${path.module}/files/values.yaml")}"
+    "${data.template_file.values.rendered}"
   ]
 
 }

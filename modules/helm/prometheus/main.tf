@@ -15,3 +15,7 @@ resource "helm_release" "prometheus-operator" {
     "${data.template_file.values.rendered}"
   ]
 }
+
+output "name" {
+  value = "${helm_release.prometheus-operator.name}"
+}

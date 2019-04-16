@@ -11,7 +11,7 @@ variable "oauth_scopes" {
 }
 
 variable "google_project" {}
-variable "google_zone" {}
+variable "google_location" {}
 variable "cluster_name" {}
 variable "pool_name" {}
 variable "cluster_node_type" {}

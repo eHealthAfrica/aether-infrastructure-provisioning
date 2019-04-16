@@ -1,8 +1,8 @@
 variable "google_project" {}
-variable "google_zone" {}
+variable "google_location" {}
 variable "google_region" {}
 variable "cluster_name" {}
-variable "additional_zones" {}
+variable "google_node_locations" {}
 variable "initial_node_count" {}
 variable "admin_user" { default="admin" }
 variable "admin_password" {}
