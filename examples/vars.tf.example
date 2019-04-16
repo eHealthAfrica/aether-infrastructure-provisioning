@@ -16,7 +16,7 @@ variable "database_instance_name" { default="" }
 # Postgres root password
 variable "postgres_root_password" { default="" }
 
-# Postgres application users
+# Postgres database names
 variable "odk_database_name" { default="" }
 variable "ui_database_name" { default="" }
 variable "gather_database_name" { default="" }
