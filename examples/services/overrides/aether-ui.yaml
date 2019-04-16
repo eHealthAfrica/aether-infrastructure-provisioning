@@ -1,0 +1,41 @@
+environment: "prod"
+replicaCount: 2
+trusted_origins: .${domain}
+domain: ${domain}
+sentry:
+  enabled: false
+app:
+  secrets: ui-secrets
+  tag: 1.3.0
+  admin_user: admin
+  db:
+    host: 127.0.0.1
+    user: ${ui_database_user}
+    name: ${ui_database_name}
+    secret: database-credentials
+  kernel:
+    url: ${kernel_url}
+    secret: kernel-secrets
+service:
+  type: NodePort
+ingress:
+  certsecret: ${ui_url}
+  hosts:
+    - ${ui_url}
+  ssl:
+    letsencrypt: true
+    cert_secret: ${ui_url}
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "75M"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt
+    certmanager.k8s.io/acme-challenge-type: dns01
+    certmanager.k8s.io/acme-dns01-provider: ${dns_provider}
+database:
+  # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
+  instance: ${database_instance_name}
+provider:
+  gcp: true

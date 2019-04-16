@@ -1,0 +1,49 @@
+environment: "prod"
+replicaCount: 2
+aether:
+  kernel:
+    url: https://${kernel_url}
+odk_url: https://${odk_url}
+domain: ${domain}
+trusted_origins: .${domain}
+sentry:
+  enabled: false
+app:
+  tag: 1.3.0
+  secret: odk-secrets
+  kernel:
+    secret: kernel-secrets
+  db:
+    host: 127.0.0.1
+    user: ${odk_database_user}
+    name: ${odk_database_name}
+    secret: database-credentials
+  storage:
+    backend: gcs
+    bucket:
+      name: ${odk_bucket_name}
+      credentialsPath: "/secrets/gcp/credentials.json"
+      credentialsSecret: ${gcs_bucket_credentials}
+service:
+  type: NodePort
+ingress:
+  certsecret: wildcard
+  hosts:
+    - ${odk_url}
+  ssl:
+    letsencrypt: true
+    cert_secret: ${odk_url}
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "75M"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt
+    certmanager.k8s.io/acme-challenge-type: dns01
+    certmanager.k8s.io/acme-dns01-provider: ${dns_provider}
+database:
+  # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
+  instance: ${database_instance_name}
+provider:
+  gcp: true
