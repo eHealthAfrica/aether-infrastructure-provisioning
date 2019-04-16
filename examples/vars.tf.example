@@ -1,4 +1,5 @@
 # Kubernetes admin credentials
+# password must be at least 16 characters
 variable "admin_password" { default="" }
 variable "namespace" { default="" }
 variable "admin_user" { default="" }
@@ -8,6 +9,12 @@ variable "odk_database_user" { default="" }
 variable "ui_database_user" { default="" }
 variable "gather_database_user" { default="" }
 variable "kernel_database_user" { default="" }
+
+# Postgres instance name
+variable "database_instance_name" { default="" }
+
+# Postgres root password
+variable "postgres_root_password" { default="" }
 
 # Postgres application users
 variable "odk_database_name" { default="" }
@@ -25,14 +32,16 @@ variable "odk_bucket_name" { default="" }
 
 # Google specific
 variable "google_project" { default="" }
+
+# https://cloud.google.com/compute/docs/regions-zones/
 variable "google_region" { default="" }
-variable "google_zone" { default="" }
-variable "google_additional_zones" { default="" }
+variable "google_location" { default="" }
+variable "google_node_locations" { default="" }
 
 # Prometheus and AlertManager htauth
 variable "monitoring_namespace" { default="" }
-variable "monitoring_user" { default="" }
-variable "monitoring_password" { default="" }
+# Generate with 'htpasswd -nb <user> <strong_password>'
+variable "monitoring_htauth" { default="" }
 
 # Service URL's
 variable "odk_url" { default="" }

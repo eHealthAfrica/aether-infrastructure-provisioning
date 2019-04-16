@@ -1,20 +1,20 @@
 #Google GKE Cluster and Node Pool
 module "gke_cluster" {
   source = "../modules/gke_cluster"
-  google_zone = "${var.google_zone}"
+  google_location = "${var.google_location}"
   google_region = "${var.google_region}"
   google_project = "${var.google_project}"
   cluster_name = "foo" # UPDATE ME
   initial_node_count = 1
   admin_user = "admin"
-  additional_zones = "${var.google_additional_zones}"
+  google_node_locations = "${var.google_node_locations}"
   admin_password = "${var.admin_password}" # UPDATE ME
 }
 
 module "gke_node_pool" {
   source = "../modules/gke_node_pool"
   cluster_name = "${module.gke_cluster.cluster_name}"
-  google_zone = "${var.google_zone}"
+  google_location = "${var.google_location}"
   pool_name = "app-pool"
   node_count = 1
   cluster_node_type = "n1-standard-2"
@@ -41,13 +41,11 @@ module "google_dns" {
 module "aether_odk_storage" {
   source = "../modules/gcs_bucket"
   gcs_bucket_name = "${var.odk_bucket_name}"
-  gcs_bucket_credentials = "${var.bucket_credentials}"
   namespace = "${var.namespace}"
 }
 
 module "aether_kernel_storage" {
   source = "../modules/gcs_bucket"
   gcs_bucket_name = "${var.kernel_bucket_name}"
-  gcs_bucket_credentials = "${var.kernel_bucket_name}-credentials"
   namespace = "${var.namespace}"
 }
